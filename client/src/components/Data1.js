@@ -108,7 +108,8 @@ function Data1(props)
 
     
     
-    return(
+    return (
+        
         <>
 
 
@@ -125,6 +126,8 @@ function Data1(props)
                     <p>{get[key].price}</p>
                     <p>{get[key]._id}</p>
                     <button onClick={(e) => gotocart(e,get[key]._id)}>add to cart</button>
+                    
+
 
                 </div>
             </div>
@@ -139,6 +142,7 @@ function Data1(props)
 
        
         </>
+        
     )
 }
 

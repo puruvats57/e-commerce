@@ -118,7 +118,8 @@ exports.logout_post = (req, res) => {
 
 exports.get_id = (req, res, next) => {
 
-  const { uid, id } = req.body;
+  const { token, id } = req.body;
+  const { uid } = req.uid;
   
   console.log("req.id=", id);
   //var id = req.body.id;
@@ -127,14 +128,79 @@ exports.get_id = (req, res, next) => {
   
 
   //console.log("uid", uid);
-  //console.log("uid", uid);
-  User.updateOne( { "_id" : "627a50d293943e21103cd709" },{ $push: { "cart": 95 } });
+  console.log("uid", _id);
+  User.updateOne(
+		{ _id: _id },
+		{ $push: { cart: id } },function(err,d){
+			if(err) console.warn(err);
+			console.log('item add to cart');
+			console.log(d);
+		}
+	 );
 
 
   //return res.send(req.body.id);
   return res.json({ token: uid })
   
 };
+
+exports.cart_items = (req, res) => {
+  let items;
+  let details;
+  const { uid } = req.uid;
+  var _id = uid.id;
+  
+  console.log("_id for cart",_id);
+  
+  
+  
+  User.find({_id:_id}, function (err, allDetails) {
+    if (err) {
+        console.log(err);
+    } else {
+      console.log(allDetails);
+
+      items = allDetails[0].cart;
+      console.log("items for user", items);
+      //console.log("length", items.length);
+      f();
+
+      
+      
+        
+    }
+  })
+  function f()
+  {
+    
+    Item.find({ _id: { $in: items } }, function (err, allDetails) {
+        if (err) {
+            console.log(err);
+        } else {
+          console.log("ii", allDetails);
+          res.send({"data":allDetails});
+          
+          
+        }
+    })
+
+
+    
+    
+
+
+  }
+
+  
+
+
+  
+
+
+};
+
+
+
 
 
 

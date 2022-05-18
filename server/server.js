@@ -108,7 +108,8 @@ app.get("/logout", appController.logout_post);
 
 
 
-app.post("/get_id", isAuth,appController.get_id);
+app.post("/get_id", isAuth, appController.get_id);
+app.post("/cart_items", isAuth,appController.cart_items);
   
   
   

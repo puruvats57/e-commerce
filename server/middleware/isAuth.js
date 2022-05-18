@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 exports.isAuth = (req, res, next) => {
 
-  const { token, id } = req.body;
+  const { token} = req.body;
 
   console.log("isauth", token);
   //const token = req.body.token;
@@ -17,7 +17,7 @@ exports.isAuth = (req, res, next) => {
         res.status(401).json({
             errors: [
                 {
-                    msg: "No token found"
+                    msg: "login first"
                 }
             ]
         })
@@ -25,8 +25,8 @@ exports.isAuth = (req, res, next) => {
 
     
   const uid = jwt.verify(token, "secretkey");
-  console.log("uid",uid);
-  req.body = { uid, id };
+  console.log("uid from auth",uid);
+  req.uid = { uid };
   next();
 
   
