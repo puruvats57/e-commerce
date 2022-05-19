@@ -6,7 +6,8 @@ itemSchema = new Schema( {
 	
 	name: String,
     variety:String,
-    price:Number
+    price: Number,
+    quantity:Number
 	
 }),
 Items = mongoose.model('Items', itemSchema);

@@ -118,7 +118,10 @@ exports.logout_post = (req, res) => {
 
 exports.get_id = (req, res, next) => {
 
-  const { token, id } = req.body;
+  if (req.status !="loginfirst")
+  {
+
+    const { token, id } = req.body;    //id=selected item id
   const { uid } = req.uid;
   
   console.log("req.id=", id);
@@ -129,6 +132,17 @@ exports.get_id = (req, res, next) => {
 
   //console.log("uid", uid);
   console.log("uid", _id);
+    
+    
+    Item.updateOne(
+      { _id: id},
+      { $inc: { quantity: -1 } },function(err,d){
+        if(err) console.warn(err);
+        console.log('cart decrment');
+        console.log(d);
+      }
+     );
+    
   User.updateOne(
 		{ _id: _id },
 		{ $push: { cart: id } },function(err,d){
@@ -141,6 +155,17 @@ exports.get_id = (req, res, next) => {
 
   //return res.send(req.body.id);
   return res.json({ token: uid })
+
+    
+  }
+  else {
+    console.log("go yo login");
+    return res.json({status:"login"});
+
+    
+  }
+
+  
   
 };
 
@@ -198,6 +223,53 @@ exports.cart_items = (req, res) => {
 
 
 };
+
+exports.remove_item = (req, res) => {
+
+  //remove item from cart
+  var q;
+  const { token, id } = req.body;    //id=selected item id
+  const { uid } = req.uid;
+  
+  console.log("req.id=", id);
+  //var id = req.body.id;
+
+  var _id = uid.id;
+  
+
+  //console.log("uid", uid);
+  console.log("uid", _id);
+
+  
+  
+  
+    Item.updateOne(
+      { _id: id},
+      { $inc: { quantity: 1 } },function(err,d){
+        if(err) console.warn(err);
+        console.log('cart increment');
+        console.log(d);
+      }
+    );
+    
+  
+    
+    
+  
+  User.updateOne(
+		{ _id: _id },
+    { $pull: { cart: {$eq:id } } } ,function(err,d){
+			if(err) console.warn(err);
+			console.log('item remove from cart');
+      console.log(d);
+      
+      res.send({"data":"good"});
+		}
+	 );
+  
+};
+
+
 
 
 

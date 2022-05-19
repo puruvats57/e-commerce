@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate, Link } from "react-router-dom";
 
 
 
@@ -6,6 +7,7 @@ import "../data.css";
 
 function Home(props)
 {
+    const navigate = useNavigate();
    
     let [got,getall]=useState(0);
     
@@ -38,7 +40,60 @@ function Home(props)
                
                console.log("hhhh",got);
             });
-        },[])
+        }, [])
+    
+    
+        function gotocart(e,id)
+        {
+    
+            e.preventDefault();
+        
+            //console.log("id",id);
+    
+            console.log("my token", localStorage.getItem('token'));
+            const t = localStorage.getItem('token');
+    
+    
+            
+    
+            fetch('http://127.0.0.1:9999/get_id',
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        token: t,
+                        id: id
+                    
+                    }),
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                    
+                
+            }).then(response => response.json())
+                .then(json => {
+                    if (json.status != "login") {
+                        console.log("uid=", json.token);
+                        
+                        
+                    }
+                    else {
+                        alert('login first');
+                        navigate('/login');
+                        
+                    }
+                        
+                    //setuid(json.token);
+                
+               
+                });
+            //console.log("uid of get_id=", uid);
+    
+    
+            
+           
+    
+    
+        }
 
 
         
@@ -62,7 +117,8 @@ function Home(props)
                     <h5>{got[key].name}</h5>
                     <h3>{got[key].variety}</h3>
                     <p>{got[key].price}</p>
-                    <button>add to cart</button>
+                    <p>{got[key].quantity !=0 ? <p>in stock</p>: <p>not in stock</p> }</p>
+                    <button onClick={(e) => gotocart(e,got[key]._id)}>add to cart</button>
                     </div>
                 </div>
                

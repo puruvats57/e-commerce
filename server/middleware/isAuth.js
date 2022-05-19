@@ -14,13 +14,8 @@ exports.isAuth = (req, res, next) => {
     // CHECK IF WE EVEN HAVE A TOKEN
   if (!token) {
     console.log("not found");
-        res.status(401).json({
-            errors: [
-                {
-                    msg: "login first"
-                }
-            ]
-        })
+    req.status = "loginfirst";
+    next();
     }
 
     

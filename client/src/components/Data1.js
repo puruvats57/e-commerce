@@ -1,3 +1,5 @@
+//after searching page
+
 import React, { useEffect, useState } from 'react';
 
 
@@ -70,38 +72,25 @@ function Data1(props)
             
         }).then(response => response.json())
             .then(json => {
-                console.log("uid=", json.token);
-                setuid(json.token);
-            
+                if (json.status != "login") {
+                    console.log("uid=", json.token);
+                    setuid(json.token);
+                    
+                }
+                else {
+                    alert('login first');
+                    navigate('/login');
+                    
+                }
+                    
+                
            
             });
         console.log("uid of get_id=", uid);
 
 
         
-        /*fetch('http://127.0.0.1:9999/cart',
-
-        {
-            method:"POST",
-            body: JSON.stringify({
-                uid:uid,
-                id: id
-            
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-
-        }*//*).then(response => response.json())
-            .then(json =>{
-                
-               
-               console.log(json);
-            });*/
-
-
-        
-        //navigate('/cart', { state: {id:id } });
+       
 
 
     }
