@@ -44,7 +44,7 @@ function Data1(props)
             });
     }, [name])
     
-    function gotocart(e,id)
+    function gotocart(e,id,q)
     {
 
         e.preventDefault();
@@ -62,7 +62,8 @@ function Data1(props)
                 method: "POST",
                 body: JSON.stringify({
                     token: t,
-                    id: id
+                    id: id,
+                    q:q
                 
                 }),
                 headers: {
@@ -114,7 +115,7 @@ function Data1(props)
                     <h3>{get[key].variety}</h3>
                     <p>{get[key].price}</p>
                     <p>{get[key]._id}</p>
-                    <button onClick={(e) => gotocart(e,get[key]._id)}>add to cart</button>
+                    <button onClick={(e) => gotocart(e,get[key]._id,0)}>add to cart</button>
                     
 
 

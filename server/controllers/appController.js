@@ -121,7 +121,7 @@ exports.get_id = (req, res, next) => {
   if (req.status !="loginfirst")
   {
 
-    const { token, id } = req.body;    //id=selected item id
+    const { token, id,q } = req.body;    //id=selected item id
   const { uid } = req.uid;
   
   console.log("req.id=", id);
@@ -136,7 +136,7 @@ exports.get_id = (req, res, next) => {
     
     Item.updateOne(
       { _id: id},
-      { $inc: { quantity: -1 } },function(err,d){
+      { $inc: { quantity: -q } },function(err,d){
         if(err) console.warn(err);
         console.log('cart decrment');
         console.log(d);
