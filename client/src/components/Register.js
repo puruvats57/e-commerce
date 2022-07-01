@@ -10,7 +10,7 @@ function Register(props){
         <>
             <h2>register page</h2>
             
-            <form action="http://127.0.0.1:9999/register" method="POST">
+            <form action="http://127.0.0.1:5000/register" method="POST">
                 <div className="input-group">
                 <label for="name">name:</label>
                 <input type="text" name="name" />

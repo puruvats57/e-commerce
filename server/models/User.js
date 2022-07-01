@@ -11,7 +11,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  cart:[String]
+  cart: [{
+    obj: String,
+    quantity:Number
+  }]
 });
 
 module.exports = mongoose.model("User", userSchema);

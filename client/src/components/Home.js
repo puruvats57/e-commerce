@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 
 
@@ -9,7 +10,9 @@ function Home(props)
 {
     const navigate = useNavigate();
    
-    let [got,getall]=useState(0);
+    let [got, getall] = useState(0);
+   
+    
     
 
 
@@ -20,9 +23,10 @@ function Home(props)
         
         
 
-        useEffect(() =>{
-        console.log("hye from get fetch");
-        fetch('http://127.0.0.1:9999/fetch',
+    useEffect(() => {
+        
+        
+        fetch('http://127.0.0.1:5000/fetch',
 
         {
             method:"GET",
@@ -43,57 +47,51 @@ function Home(props)
         }, [])
     
     
-        function gotocart(e,id,q)
+        function addtocart(e,id,q)
         {
-    
             e.preventDefault();
-        
             //console.log("id",id);
-    
-            console.log("my token", localStorage.getItem('token'));
-            const t = localStorage.getItem('token');
-    
-    
+
+        console.log("my token", localStorage.getItem('token'));
+        const t = localStorage.getItem('token');
+
+
+        
+
+        fetch('http://127.0.0.1:5000/addtocart',
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    token: t,
+                    id: id,
+                    q:q
+                
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+                
             
-    
-            fetch('http://127.0.0.1:9999/get_id',
-                {
-                    method: "POST",
-                    body: JSON.stringify({
-                        token: t,
-                        id: id,
-                        q:q
+        }).then(response => response.json())
+            .then(json => {
+                if (json.data != "login") {
+                    console.log("uid=", json.token);
+                   // setuid(json.token);
                     
-                    }),
-                    headers: {
-                        "Content-type": "application/json; charset=UTF-8"
-                    }
+                }
+                else {
+                    alert('login first');
+                    navigate('/login');
+                    
+                }
                     
                 
-            }).then(response => response.json())
-                .then(json => {
-                    if (json.status != "login") {
-                        console.log("uid=", json.token);
-                        
-                        
-                    }
-                    else {
-                        alert('login first');
-                        navigate('/login');
-                        
-                    }
-                        
-                    //setuid(json.token);
-                
-               
-                });
-            //console.log("uid of get_id=", uid);
-    
-    
-            
            
+            });
+       // console.log("uid of get_id=", uid);
     
-    
+            
+        
         }
 
 
@@ -107,27 +105,38 @@ function Home(props)
     return(
 
         <>
+            <div className="row">
+            
+            
         {Object.keys(got).map((key) =>(
 
             <>
            
-            
+                
+                <div className="column">
                 <div className="card" >
                 
                     <div className="card-body">
                     <h5>{got[key].name}</h5>
-                    <h3>{got[key].variety}</h3>
-                    <p>{got[key].price}</p>
+                    <h5>brand:{got[key].band}</h5>
+                    <h3>variety:{got[key].variety}</h3>
+                    <p>price:{got[key].price}</p>
                     <p>{got[key].quantity !=0 ? <p>in stock</p>: <p>not in stock</p> }</p>
-                    <button onClick={(e) => gotocart(e,got[key]._id,0)}>add to cart</button>
+                    <button onClick={(e) => addtocart(e,got[key]._id,1)}>add to cart</button>
                     </div>
                 </div>
+                </div>
+                  
                
 
             </>
+              
 
 
         ))}
+             
+            </div>
+            
         </>
 
     

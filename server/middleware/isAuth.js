@@ -15,14 +15,27 @@ exports.isAuth = (req, res, next) => {
   if (!token) {
     console.log("not found");
     req.status = "loginfirst";
-    next();
-    }
-
     
-  const uid = jwt.verify(token, "secretkey");
-  console.log("uid from auth",uid);
-  req.uid = { uid };
+  }
+  else {
+    const uid = jwt.verify(token, "secretkey");
+    if (uid) {
+      console.log("uid from auth",uid);
+      req.uid = { uid };
+      
+    }
+    else {
+      console.log('logi first');
+      req.status = "loginfirst";
+      
+    }
+    
+    
+    
+  }
   next();
+    
+  
 
   
 };

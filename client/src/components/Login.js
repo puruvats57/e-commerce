@@ -3,15 +3,23 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 
 function Login(props) {
+    let [token,settoken]=useState(null); 
     
     const navigate = useNavigate();
+    function logout()
+    {
+        localStorage.removeItem('token');
+        alert("logged out successfully");
+        navigate('/');
+
+    }
     
 
 
-    useEffect(() => {
+    
     
                 
-            
+    useEffect(() => {
         const form = document.getElementById('login')
         form.addEventListener('submit', login)
 
@@ -20,7 +28,7 @@ function Login(props) {
             const name = document.getElementById('name').value
             const password = document.getElementById('password').value
 
-            const result = await fetch('http://127.0.0.1:9999/login', {
+            const result = await fetch('http://127.0.0.1:5000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -32,23 +40,28 @@ function Login(props) {
             }).then((res) => res.json())
 
             if (result.status === 'ok') {
+                alert('logged in successfully');
+                
+                settoken = result.data;
                 // everythign went fine
                 console.log('Got the token: ', result.data)
                 localStorage.setItem('token', result.data)
                 //alert('Success')
                 navigate('/');
             } else {
+                alert(result.status);
                 //alert(result.error)
             }
 
             
-                // everythign went fine
+            // everythign went fine
             
 
-                //alert('Success')
+            //alert('Success')
             
         }
-    })
+    });
+    
         
         
     
@@ -61,13 +74,14 @@ function Login(props) {
             <h2>Login page</h2>
             
             <form id="login">
-                <input type="text" autocomplete="off" id="name" placeholder="Username" />
-			    <input type="text" autocomplete="off" id="password" placeholder="Password" />
-                <input type="submit" value="Submit Form" />
+                Username:<input type="text" autocomplete="off" id="name" placeholder="Username" /><br></br>
+			    Password:<input type="text" autocomplete="off" id="password" placeholder="Password" /><br></br><br></br>
+                <input type="submit" value="Login" />
             </form>
             <p>if dont have account please register!</p>
             <a href="/register">Register</a>
-            <a href='http://127.0.0.1:9999/logout'>Logout</a>
+
+            <button class="button" onClick={logout}>logout</button>
             
         
         </>

@@ -1,17 +1,15 @@
 
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "../data.css";
 
 function Search(props){
   const navigate = useNavigate();
 
-
-    const [search,setsearch]=useState(null);
-
-
-
-   props.onsearch(search);
+  const [loggedin, setlogin] = useState(null);
+  const [search, setsearch] = useState(null);
+  ;
 
     
    /* useEffect(() => {
@@ -40,7 +38,8 @@ function Search(props){
     
 
     return(
-        <>
+      <>
+        <div className="search">
         <input 
       type="text"
       name="name"
@@ -54,7 +53,8 @@ function Search(props){
         
         <a href='/login'><button class="button">login</button></a>
         <a href='/cart'><button class="button">cart</button></a>
-
+        
+      </div>
         
         </>
     
