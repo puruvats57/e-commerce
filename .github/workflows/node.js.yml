@@ -22,7 +22,7 @@ jobs:
       - name: Nodejs
      
         run: npm run build
-        working-directory: ./server
+        working-directory: ./client
           
         
     
