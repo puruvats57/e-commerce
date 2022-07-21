@@ -17,9 +17,9 @@ jobs:
 
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Nodejs
+      - uses: actions/checkout@v3
+      - name: Nodejs
      
-    - run: npm run build 
-      working-directory: server
+      - run: npm run build 
+        working-directory: server
     
