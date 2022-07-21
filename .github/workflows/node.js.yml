@@ -23,7 +23,9 @@ jobs:
     
     - name: Use Node.js 
       
-    - run: cd client
-    - run: npm install
+      run: cd client
+    - name: n
+      run: npm install
+      
     
       
