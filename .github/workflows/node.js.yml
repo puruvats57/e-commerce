@@ -23,9 +23,9 @@ jobs:
     
     - name: Use Node.js 
       
-      run: ls
+      run: cd ./client
     - name: n
-      run: npm install
+      run: ls
       
     
       
