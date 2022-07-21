@@ -23,7 +23,7 @@ jobs:
     
     - name: Use Node.js 
       
-      run: cd client
+      run: cd /home/ubuntu/actions-runner/_work/simple-e-commerce-WebApp/simple-e-commerce-WebApp
     - name: n
       run: npm install
       
