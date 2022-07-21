@@ -22,7 +22,7 @@ jobs:
       - name: Nodejs
      
         run: |
-          cd server
+          cd client
           npm run build
         
     
