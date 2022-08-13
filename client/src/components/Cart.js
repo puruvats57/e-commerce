@@ -158,7 +158,14 @@ function Cart() {
 
     function handleChange(event) {
         setsearch(event.target.value);
-      }
+    }
+    function pa()
+    {
+        navigate('/pay');
+        
+
+
+    }
 
 
   return (
@@ -217,6 +224,7 @@ function Cart() {
 
 ))}
               <h5>total price : {total}</h5>
+              <button onClick={pa}>pay now</button>
 
 </div>
           

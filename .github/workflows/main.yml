@@ -1,0 +1,45 @@
+name: deploying
+
+on: [push]
+
+jobs:
+  delete:
+    runs-on: self-hosted
+    steps:
+       - uses: actions/checkout@v2
+       - name: delete
+        
+         run: kubectl delete deployment my-todo-client-deployment
+       - name: delete
+        
+         run: kubectl delete deployment my-todo-server-deployment
+       - name: delete
+        
+         run: kubectl delete deployment my-todo-mongo-deployment
+       
+
+  build: 
+      if: ${{ always() }}
+      needs: delete
+
+ 
+      runs-on: self-hosted
+      steps:
+        - uses: actions/checkout@v2
+      
+         
+       
+        - name: build
+        
+          run: docker-compose build
+         
+      
+        - name: build
+        
+          run: kubectl apply -f client-deployment.yml
+        - name: build
+        
+          run: kubectl apply -f server-deployment.yml
+        - name: build
+        
+          run: kubectl apply -f mongo-deployment.yml

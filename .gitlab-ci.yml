@@ -1,0 +1,7 @@
+build image:
+    script:
+        - docker-compose build
+        
+        
+        
+

@@ -7,6 +7,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
 import Data1 from "./components/Data1";
+import Pay from "./components/Pay";
 
 
 
@@ -40,7 +41,9 @@ function App() {
         <Route path='/search' element={<Data1/>} />
         <Route path='/login' element={<Login />} />
         <Route path='/cart' element={<Cart />} />
-        <Route path='/register' element={<Register/>} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/pay' element={<Pay />} />
+        
         
 
     </Routes>
