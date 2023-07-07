@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
-
-
 import "../data.css";
 
 function Home(props)
@@ -12,17 +10,6 @@ function Home(props)
    
     let [got, getall] = useState(0);
    
-    
-    
-
-
-    
-       
-
-
-        
-        
-
     useEffect(() => {
         
         
@@ -92,17 +79,8 @@ function Home(props)
     
             
         
-        }
-
-
-        
-        
-      
-
-
-       
-        
-    return(
+    }
+    return (
 
         <>
             <div className="row">
@@ -118,7 +96,7 @@ function Home(props)
                 
                     <div className="card-body">
                     <h5>{got[key].name}</h5>
-                    <h5>brand:{got[key].band}</h5>
+                    <h5>brand:{got[key].brand}</h5>
                     <h3>variety:{got[key].variety}</h3>
                     <p>price:{got[key].price}</p>
                     <p>{got[key].quantity !=0 ? <p>in stock</p>: <p>not in stock</p> }</p>

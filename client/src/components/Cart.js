@@ -185,7 +185,7 @@ function Cart() {
                 <h5>{item[key].name}</h5>
                 <h3>{item[key].variety}</h3>
                 <p>price:{item[key].price}</p>
-                <p>{item[key]._id}</p>
+        
                 <input 
                         type="text"
                         name="name"

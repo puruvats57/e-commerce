@@ -1,14 +1,7 @@
 const bcrypt = require("bcryptjs");
-
-
 const User = require("../models/User");
 const Item = require("../models/items");
 const jwt = require('jsonwebtoken');
-
-
-
-
-
 let uid;
 
 exports.landing_page = (req, res) => {
@@ -48,7 +41,7 @@ exports.login_post = async (req, res) => {
 
   //console.log("after", id);
 
-  const token = jwt.sign({ id }, 'secretkey', { expiresIn: "2h" });
+  const token = jwt.sign({ id }, 'secretkey', { expiresIn: "1h" });
 
  // console.log("token", token);
   
@@ -150,12 +143,7 @@ exports.addmore = (req, res, next) => {
 
   });
   
-
-
 }
-
-
-
 
 
 exports.addtocart = (req, res, next) => {

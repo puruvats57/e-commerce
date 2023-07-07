@@ -1,31 +1,29 @@
-version: "3"
+version: '3'
 services:
-  react-app:
-    image: react-app
-    stdin_open: true
-    ports: 
-      - "3000:3000"
-    networks:
-      - mern-app
-  api-server:
-    image: api-server
+  server:
+    build:
+      context: ./server/
+    image: akkyou/server:latest
+    command: "node server.js"
+    
     ports:
       - "5000:5000"
-    networks:
-      - mern-app
-    depends_on:
+    links:
       - mongo
-  mongo:
-    image: mongo:3.6.19-xenial
+    
+  client:
+    build:
+      context: ./client/
+    image: akkyou/client:latest
+    command: "npm start"
+    
+    
     ports:
-      - "27017:27017"
-    networks:
-      - mern-app
-    volumes:
-      - mongo-data:/data/db
-networks:
-  mern-app:
-    driver: bridge
-volumes:
-  mongo-data:
-    driver: local
+      - "3000:3000"
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - '27017:27017'
+
+

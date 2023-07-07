@@ -1,5 +1,4 @@
 var express = require('express');
-var ejs = require('ejs');
 var path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
@@ -22,31 +21,12 @@ const config = require("./Paytm/config");
 //const config = require("config");
 const parseUrl = express.urlencoded({ extended: false });
 const parseJson = express.json({ extended: false });
-
 app.use(cookieParser());
-
-
-
-
 app.use(cors());
-
-
-
-
-
-
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-//app.use(express.json());
-//app.use(express.urlencoded());
-
-
-
-
-
-mongoose.connect('mongodb://127.0.0.1:27017/ecommerce', {
+mongoose.connect('mongodb+srv://prateekvats963:puru@cluster0.cz8wggl.mongodb.net/ecommerce? retryWrites = true & w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }, (err) => {
@@ -61,19 +41,6 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
 });
-
-app.use(session({
-  secret: 'work hard',
-  resave: true,
-  saveUninitialized: false,
-  store: new MongoStore({
-    mongooseConnection: db
-  }),
-  uid:""
-  //session expires after 3 hours
-  
-
-}));
 
 
 app.get('/fetch',function(req,res) {
@@ -254,23 +221,8 @@ app.post("/remove_item", isAuth, appController.remove_item);
 app.post("/addmore", isAuth, appController.addmore);
 app.post("/payment", isAuth, appController.payment);
 app.post("/brand", isAuth, appController.brand);
-
-
-  
-  
-  
-
-  
-  
-
-
-  
-
-
-
-
-
-const PORT = process.env.PORT || 5000;
+//const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 app.listen(PORT, function () {
   console.log('Server is started on http://127.0.0.1:'+PORT);
 });

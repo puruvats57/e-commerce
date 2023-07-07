@@ -1,8 +1,6 @@
 
 const jwt = require("jsonwebtoken");
 
-
-
 exports.isAuth = (req, res, next) => {
 
   const { token} = req.body;
