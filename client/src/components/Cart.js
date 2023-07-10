@@ -25,7 +25,7 @@ function Cart() {
   }, [fetchingItems, fetchingPayment]);
 
   function fetchCartItems() {
-    fetch('${process.env.BACKEND_LIVE_URL}/cart_items', {
+    fetch(`${process.env.REACT_APP_BACKEND_LIVE_URL}/cart_items`, {
       method: 'POST',
       body: JSON.stringify({
         token: t,
@@ -50,7 +50,7 @@ function Cart() {
   }
 
   function fetchPaymentDetails() {
-    fetch('${process.env.BACKEND_LIVE_URL}/payment', {
+    fetch(`${process.env.REACT_APP_BACKEND_LIVE_URL}/payment`, {
       method: 'POST',
       body: JSON.stringify({
         token: t,
@@ -77,7 +77,7 @@ function Cart() {
   async function addQ(e, id) {
     e.preventDefault();
 
-    fetch('${process.env.BACKEND_LIVE_URL}/addmore', {
+    fetch(`${process.env.REACT_APP_BACKEND_LIVE_URL}/addmore`, {
       method: 'POST',
       body: JSON.stringify({
         token: t,
@@ -100,7 +100,7 @@ function Cart() {
   function removeCart(e, id) {
     e.preventDefault();
 
-    fetch('${process.env.BACKEND_LIVE_URL}/remove_item', {
+    fetch(`${process.env.REACT_APP_BACKEND_LIVE_URL}/remove_item`, {
       method: 'POST',
       body: JSON.stringify({
         token: t,

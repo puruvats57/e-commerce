@@ -29,7 +29,7 @@ function Data1(props) {
 
     useEffect(() => {
         console.log("hye from get fetch");
-        fetch('${process.env.BACKEND_LIVE_URL}/fetch',
+        fetch(`${process.env.REACT_APP_BACKEND_LIVE_URL}/fetch`,
 
             {
                 method: "POST",
@@ -67,7 +67,7 @@ function Data1(props) {
 
         
 
-        fetch('${process.env.BACKEND_LIVE_URL}/addtocart',
+        fetch(`${process.env.BACKEND_LIVE_URL}/addtocart`,
             {
                 method: "POST",
                 body: JSON.stringify({
@@ -124,7 +124,7 @@ function Data1(props) {
                 
         }
         console.log("d", d);
-        const result = fetch('${process.env.BACKEND_LIVE_URL}/brand', {
+        const result = fetch(`${process.env.BACKEND_LIVE_URL}/brand`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

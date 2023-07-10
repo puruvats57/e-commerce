@@ -15,7 +15,7 @@ function Home(props)
     useEffect(() => {
         
         
-        fetch('${process.env.BACKEND_LIVE_URL}/fetch',
+        fetch(`${process.env.BACKEND_LIVE_URL}/fetch`,
 
         {
             method:"GET",
@@ -47,7 +47,7 @@ function Home(props)
 
         
 
-        fetch('${process.env.BACKEND_LIVE_URL}/addtocart',
+        fetch(`${process.env.BACKEND_LIVE_URL}/addtocart`,
             {
                 method: "POST",
                 body: JSON.stringify({
