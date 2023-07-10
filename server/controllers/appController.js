@@ -76,7 +76,7 @@ exports.register_post = async (req, res) => {
   });
 
   await user.save();
-  res.redirect("https://client-gfq7.onrender.com/login");
+  res.redirect(`${process.env.REACT_APP_FRONTEND_LIVE_URL}/login`);
 };
 
 exports.addmore = async(req, res, next) => { 

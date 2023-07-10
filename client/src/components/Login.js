@@ -27,7 +27,7 @@ function Login(props) {
       const name = document.getElementById('name').value
       const password = document.getElementById('password').value
 
-      const result = await fetch(`${process.env.BACKEND_LIVE_URL}/login`, {
+      const result = await fetch(`${process.env.REACT_APP_BACKEND_LIVE_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

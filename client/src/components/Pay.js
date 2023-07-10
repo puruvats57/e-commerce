@@ -1,6 +1,7 @@
 import React from 'react'
 
 function Pay() {
+  const backendUrl = process.env.REACT_APP_BACKEND_LIVE_URL;
   return (
       <>
           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"></link>
@@ -8,7 +9,7 @@ function Pay() {
       <div class="col-md-4 offset-md-4">
         <div class="card">
           <div class="card-body">
-            <form action="${process.env.BACKEND_LIVE_URL}/pay" method="POST">
+            <form action={`${backendUrl}/register`}method="POST">
               <div class="form-group">
                 <label for="">Name: </label>
                 <input class="form-control" type="text" name="name" />
