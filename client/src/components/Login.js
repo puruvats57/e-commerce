@@ -1,93 +1,82 @@
 import React, { useEffect, useState } from 'react';
-
 import { useNavigate, Link } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import '../data.css'; // Import the CSS file
 
 function Login(props) {
-    let [token,settoken]=useState(null); 
-    
-    const navigate = useNavigate();
-    function logout()
-    {
-        localStorage.removeItem('token');
-        alert("logged out successfully");
-        navigate('/');
+  let [token, setToken] = useState(null);
+  const navigate = useNavigate();
 
+  function logout() {
+    localStorage.removeItem('token');
+    alert("Logged out successfully");
+    navigate('/');
     }
     
+  function handleRegisterClick() {
+    navigate('/register');
+  }
 
+  useEffect(() => {
+    const form = document.getElementById('login')
+    form.addEventListener('submit', login)
 
-    
-    
-                
-    useEffect(() => {
-        const form = document.getElementById('login')
-        form.addEventListener('submit', login)
+    async function login(event) {
+      event.preventDefault()
+      const name = document.getElementById('name').value
+      const password = document.getElementById('password').value
 
-        async function login(event) {
-            event.preventDefault()
-            const name = document.getElementById('name').value
-            const password = document.getElementById('password').value
+      const result = await fetch('${process.env.BACKEND_LIVE_URL}/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name,
+          password
+        })
+      }).then((res) => res.json())
 
-            const result = await fetch('http://127.0.0.1:5000/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name,
-                    password
-                })
-            }).then((res) => res.json())
+      if (result.status === 'ok') {
+        //alert('Logged in successfully');
+        await toast.success('Successfully added', {
+            position: toast.POSITION.TOP_RIGHT,
+          });  
+        setToken(result.data);
+        localStorage.setItem('token', result.data);
+        navigate('/');
+      } else {
+        alert(result.status);
+      }
+    }
+  }, []);
 
-            if (result.status === 'ok') {
-                alert('logged in successfully');
-                
-                settoken = result.data;
-                // everythign went fine
-                console.log('Got the token: ', result.data)
-                localStorage.setItem('token', result.data)
-                //alert('Success')
-                navigate('/');
-            } else {
-                alert(result.status);
-                //alert(result.error)
-            }
+    return (
+      <>
+    <div className="login-container">
+      <h2>Login page</h2>
+      <form id="login" className="login-form">
+        <label htmlFor="name">Username:</label>
+        <input type="text" autoComplete="off" id="name" placeholder="Username" />
 
-            
-            // everythign went fine
-            
+        <label htmlFor="password">Password:</label>
+        <input type="password" autoComplete="off" id="password" placeholder="Password" />
 
-            //alert('Success')
-            
-        }
-    });
-    
+        <input type="submit" value="Login" />
+      </form>
+
+      <p>If you don't have an account, please register!</p>
         
-        
-    
-    
+          <button className="button" onClick={handleRegisterClick}>
+        Register
+      </button>
 
-    
-
-    return(
-        <>
-            <h2>Login page</h2>
-            
-            <form id="login">
-                Username:<input type="text" autocomplete="off" id="name" placeholder="Username" /><br></br>
-			    Password:<input type="text" autocomplete="off" id="password" placeholder="Password" /><br></br><br></br>
-                <input type="submit" value="Login" />
-            </form>
-            <p>if dont have account please register!</p>
-            <a href="/register">Register</a>
-
-            <button class="button" onClick={logout}>logout</button>
-            
-        
-        </>
-    
-
-    )
+      <button className="button" onClick={logout}>Logout</button>
+      </div>
+      <ToastContainer/>
+      </>
+  );
 }
 
 export default Login;

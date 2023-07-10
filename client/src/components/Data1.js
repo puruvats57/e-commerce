@@ -6,7 +6,8 @@ import React, { useEffect, useState } from 'react';
 
 import { useLocation } from "react-router-dom";
 import { useNavigate, Link } from "react-router-dom";
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -28,7 +29,7 @@ function Data1(props) {
 
     useEffect(() => {
         console.log("hye from get fetch");
-        fetch('http://127.0.0.1:5000/fetch',
+        fetch('${process.env.BACKEND_LIVE_URL}/fetch',
 
             {
                 method: "POST",
@@ -66,7 +67,7 @@ function Data1(props) {
 
         
 
-        fetch('http://127.0.0.1:5000/addtocart',
+        fetch('${process.env.BACKEND_LIVE_URL}/addtocart',
             {
                 method: "POST",
                 body: JSON.stringify({
@@ -85,6 +86,9 @@ function Data1(props) {
                 if (json.status != "login") {
                     console.log("uid=", json.token);
                     setuid(json.token);
+                    toast.success('Successfully added', {
+                        position: toast.POSITION.TOP_RIGHT,
+                      });
                     
                 }
                 else {
@@ -120,7 +124,7 @@ function Data1(props) {
                 
         }
         console.log("d", d);
-        const result = fetch('http://127.0.0.1:5000/brand', {
+        const result = fetch('${process.env.BACKEND_LIVE_URL}/brand', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -206,7 +210,7 @@ function Data1(props) {
                 <a id='3' className='hover' onClick={(e)=>brand(e,Math.floor((min+max)/2),max)}>{Math.floor((min+max)/2)}-{ max}</a><br></br>
 
             </div>
-
+            <ToastContainer/>
         </>
 
         

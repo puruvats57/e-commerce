@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import "../data.css";
 
@@ -13,7 +15,7 @@ function Home(props)
     useEffect(() => {
         
         
-        fetch('http://127.0.0.1:5000/fetch',
+        fetch('${process.env.BACKEND_LIVE_URL}/fetch',
 
         {
             method:"GET",
@@ -45,7 +47,7 @@ function Home(props)
 
         
 
-        fetch('http://127.0.0.1:5000/addtocart',
+        fetch('${process.env.BACKEND_LIVE_URL}/addtocart',
             {
                 method: "POST",
                 body: JSON.stringify({
@@ -64,6 +66,9 @@ function Home(props)
                 if (json.data != "login") {
                     console.log("uid=", json.token);
                    // setuid(json.token);
+                   toast.success('Successfully added', {
+                    position: toast.POSITION.TOP_RIGHT,
+                  });
                     
                 }
                 else {
@@ -114,6 +119,7 @@ function Home(props)
         ))}
              
             </div>
+            
             
         </>
 

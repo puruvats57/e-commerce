@@ -41,7 +41,7 @@ exports.login_post = async (req, res) => {
 
   //console.log("after", id);
 
-  const token = jwt.sign({ id }, 'secretkey', { expiresIn: "1h" });
+  const token = jwt.sign({ id }, 'secretkey');
 
  // console.log("token", token);
   
@@ -76,10 +76,10 @@ exports.register_post = async (req, res) => {
   });
 
   await user.save();
-  res.redirect("http://127.0.0.1:3000/login");
+  res.redirect("https://client-gfq7.onrender.com/login");
 };
 
-exports.addmore = (req, res, next) => { 
+exports.addmore = async(req, res, next) => { 
   var { token, id, q } = req.body;    //id=selected item id
   const { uid } = req.uid;
   let t;
@@ -97,15 +97,20 @@ exports.addmore = (req, res, next) => {
     console.log("uid", _id);
     
     
-    Item.updateOne(
+    /*Item.updateOne(
       { _id: id },
       { $inc: { quantity: -q } }, function (err, d) {
         if (err) console.warn(err);
         console.log('cart decrment');
-        console.log(d);
+        //console.log("id", id);
+        //console.log("item info",d);
       }
-  );
-  User.find({ _id: _id }, function (err, d) {
+  );*/
+ 
+
+  //to find item size in user's cart 
+  await User.find({ _id: _id }, function (err, d) {
+    console.log("hye from find");
     if (d) {
         
       let f = 0;
@@ -122,10 +127,64 @@ exports.addmore = (req, res, next) => {
       }
       if (f == 1) {
         console.log('found');
-        t = d[0].cart[i].quantity + q;
+        t = d[0].cart[i].quantity;
+        console.log("t", t);
+      }
+      else {
+        
+      }
+      
+      
+    }
+    else
+      console.log('err');
+
+  });
+  //console.log("t,q", t, q);
+
+  Item.findById(id, function(err, item) {
+    if (err) {
+      console.warn(err);
+      return;
+    }
+  
+    if (item) {
+      item.quantity = (item.quantity + t) - q;
+      item.save(function(err, updatedItem) {
+        if (err) {
+          console.warn(err);
+          return;
+        }
+        
+        console.log('cart decrement');
+        // console.log("id", id);
+        // console.log("item info", updatedItem);
+      });
+    }
+  });
+  
+  // to update user's cart
+  await User.find({ _id: _id }, function (err, d) {
+    if (d) {
+        
+      let f = 0;
+      console.log("log", d[0].cart);
+      for (var i = 0; i < d[0].cart.length; i++) {
+        if (d[0].cart[i].obj == id) {
+          f = 1;
+          break;
+
+        }
+        else
+          f = 0;
+        
+      }
+      if (f == 1) {
+        console.log('found');
+       // t = d[0].cart[i].quantity + q;
         
         User.updateOne({ _id: _id, "cart.obj": id },
-          { $inc: { "cart.$.quantity": +q } }, function (err, dy) {
+          { $set: { "cart.$.quantity": q } }, function (err, dy) {
             
           })
 
@@ -168,14 +227,27 @@ exports.addtocart = (req, res, next) => {
     console.log("uid", _id);
     
     
-    Item.updateOne(
+    /*Item.updateOne(
       { _id: id },
       { $inc: { quantity: -q } }, function (err, d) {
         if (err) console.warn(err);
         console.log('cart decrment');
         console.log(d);
       }
+    );*/
+
+    Item.findOneAndUpdate(
+      { _id: id },
+      { $inc: { quantity: -1 } },
+      function (err, d) {
+        if (err) console.warn(err);
+        console.log('cart decrement');
+        // console.log("id", id);
+        // console.log("item info",d);
+      }
     );
+    
+    
     
     //User.find( { cart: { $in: [  ] } }, { _id: _id } )
     User.find({ _id: _id }, function (err, d) {
@@ -418,7 +490,7 @@ exports.remove_item = (req, res) => {
         console.log('t', parseInt(t) + 1);
         Item.updateOne(
           { _id: id},
-          { $inc: { quantity: t } },function(err,d){
+          { $inc: { quantity:t } },function(err,d){
             if(err) console.warn(err);
             console.log('cart increment',t);
             console.log(d);

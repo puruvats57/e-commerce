@@ -15,18 +15,18 @@ const cookieParser=require('cookie-parser');
 const { signedCookies } = require('cookie-parser');
 const https = require("https");
 const qs = require("querystring");
-
 const checksum_lib = require("./Paytm/checksum");
 const config = require("./Paytm/config");
+require("dotenv").config();
 //const config = require("config");
 const parseUrl = express.urlencoded({ extended: false });
 const parseJson = express.json({ extended: false });
 app.use(cookieParser());
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb+srv://prateekvats963:puru@cluster0.cz8wggl.mongodb.net/ecommerce? retryWrites = true & w=majority', {
+mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }, (err) => {
@@ -221,8 +221,8 @@ app.post("/remove_item", isAuth, appController.remove_item);
 app.post("/addmore", isAuth, appController.addmore);
 app.post("/payment", isAuth, appController.payment);
 app.post("/brand", isAuth, appController.brand);
-//const PORT = process.env.PORT || 5000;
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+//const PORT = 5000;
 app.listen(PORT, function () {
   console.log('Server is started on http://127.0.0.1:'+PORT);
 });

@@ -1,244 +1,177 @@
 import React, { useEffect, useState } from 'react';
-
-import { useLocation } from "react-router-dom";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import BottomSection from './BottomSection';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import '../data.css';
 
 function Cart() {
-    const [search,setsearch]=useState(null);
-    const navigate = useNavigate();
-    /*const navigate = useNavigate();
-    const {state} = useLocation();
-    const { id } = state; // Read values passed on state
+  const [search, setSearch] = useState(null);
+  const navigate = useNavigate();
+  const [item, setItem] = useState([]);
+  const [pay, setPay] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [fetchingItems, setFetchingItems] = useState(true); // Track whether cart items are being fetched
+  const [fetchingPayment, setFetchingPayment] = useState(true); // Track whether payment details are being fetched
+  const t = localStorage.getItem('token');
 
-    console.log("i am there",id);*/
-    let [item, setitem] = useState(0);
-    let [pay, setpay] = useState(0);
-    let [total, settotal] = useState(0);
-    
-    useEffect(() => {
-        console.log("my token", localStorage.getItem('token'));
-        const t = localStorage.getItem('token');
-        fetch('http://127.0.0.1:5000/cart_items',
-
-            {
-                method: "POST",
-                body: JSON.stringify({
-                    token: t,
-                    
-                
-                }),
-        
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                }
-
-            }).then(response => response.json())
-            .then(json => {
-                if (json.data != "login") {
-                   
-                    setitem(json.data);
-                
-           
-                    console.log("hhhh", item);
-                    
-                }
-                else {
-                    alert('login first');
-                    navigate('/login');
-                    
-                }
-                
-            });
-        
-            fetch('http://127.0.0.1:5000/payment',
-
-            {
-                method: "POST",
-                body: JSON.stringify({
-                    token: t,
-                    
-                
-                }),
-        
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                }
-
-            }).then(response => response.json())
-            .then(json => {
-                if (json.data != "login") {
-                   
-                    setpay(json.data);
-                    settotal(json.total);
-           
-                    console.log("hhhh", pay);
-                    
-                }
-                else {
-                    
-                    
-                }
-                
-        });
-            
-        
-
-    }, []);
-
-
-    function addq(e, id)
-    {
-        e.preventDefault();
-        
-        console.log("my token", localStorage.getItem('token'));
-        const t = localStorage.getItem('token');
-
-        fetch('http://127.0.0.1:5000/addmore',
-            {
-                method: "POST",
-                body: JSON.stringify({
-                    token: t,
-                    id: id,
-                    q:search
-                
-                }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                }
-                
-            
-        }).then(response => response.json())
-            .then(json => {
-                console.log(json);
-            });
-
-        
-
-
+  useEffect(() => {
+    if (fetchingItems) {
+      fetchCartItems();
     }
-    
-    function removecart(e, id) {
-
-        e.preventDefault();
-    
-        //console.log("id",id);
-
-        console.log("my token", localStorage.getItem('token'));
-        const t = localStorage.getItem('token');
-
-
-        //remove item from cart
-
-        fetch('http://127.0.0.1:5000/remove_item',
-            {
-                method: "POST",
-                body: JSON.stringify({
-                    token: t,
-                    id: id
-                
-                }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                }
-                
-            
-            }).then(response => response.json())
-            .then(json => {
-                if (json.data == "good")
-                {
-                    console.log("cart deleted");
-                    
-                    
-                }
-                    
-                
-           
-            });
+    if (fetchingPayment) {
+      fetchPaymentDetails();
     }
+  }, [fetchingItems, fetchingPayment]);
 
-    function handleChange(event) {
-        setsearch(event.target.value);
-    }
-    function pa()
-    {
-        navigate('/pay');
-        
+  function fetchCartItems() {
+    fetch('${process.env.BACKEND_LIVE_URL}/cart_items', {
+      method: 'POST',
+      body: JSON.stringify({
+        token: t,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.data !== 'login') {
+          setItem(json.data);
+        } else {
+          alert('Login first');
+          navigate('/login');
+        }
+        setFetchingItems(false); // Set fetchingItems to false after fetching cart items
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
+  }
 
+  function fetchPaymentDetails() {
+    fetch('${process.env.BACKEND_LIVE_URL}/payment', {
+      method: 'POST',
+      body: JSON.stringify({
+        token: t,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.data !== 'login') {
+          setPay(json.data);
+          setTotal(json.total);
+        } else {
+          // Handle error
+        }
+        setFetchingPayment(false); // Set fetchingPayment to false after fetching payment details
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
+  }
 
-    }
+  async function addQ(e, id) {
+    e.preventDefault();
 
+    fetch('${process.env.BACKEND_LIVE_URL}/addmore', {
+      method: 'POST',
+      body: JSON.stringify({
+        token: t,
+        id: id,
+        q: search,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+      });
+
+    setFetchingItems(true); // Trigger fetching cart items after adding more
+    setFetchingPayment(true); // Trigger fetching payment details after adding more
+  }
+
+  function removeCart(e, id) {
+    e.preventDefault();
+
+    fetch('${process.env.BACKEND_LIVE_URL}/remove_item', {
+      method: 'POST',
+      body: JSON.stringify({
+        token: t,
+        id: id,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.data === 'good') {
+          console.log('cart deleted');
+          toast.success('Successfully Removed', {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+          setFetchingItems(true); // Trigger fetching cart items after removing from cart
+          setFetchingPayment(true); // Trigger fetching payment details after removing from cart
+        }
+      });
+  }
+
+  function handleChange(event) {
+    setSearch(event.target.value);
+  }
+
+  function pa() {
+    navigate('/pay');
+  }
 
   return (
-      <>
-          
-          <h2>cart items</h2>
-    <div className="row">
-
-    {Object.keys(item).map((key) =>(
-
-        <>
-        <div className="column">
-
-        <div className="card" >
-
-            <div className="card-body">
-                <h5>{item[key].name}</h5>
-                <h3>{item[key].variety}</h3>
-                <p>price:{item[key].price}</p>
-        
-                <input 
-                        type="text"
-                        name="name"
-                        onChange={handleChange}
-                />
-
-                <button onClick={(e) => addq(e,item[key]._id)}>want to add more</button>
-                <button onClick={(e) => removecart(e,item[key]._id)}>remove from cart</button>
-                
-                
-                
-
-
-            </div>
-        </div>
-        </div>
-        
-
-
-        </>
-
-
-    ))}
-        </div>  
-
-          <h2>payment</h2>
-
-<div className='bottom'>
-{Object.keys(pay).map((key) =>(
-
     <>
-    
-        <h5>{pay[key].name}({pay[key].price}) , quantity-{pay[key].quantity}</h5>
-            
-    </>
-
-))}
-              <h5>total price : {total}</h5>
-              <button onClick={pa}>pay now</button>
-
-</div>
-          
-        
-
-   
-
-   
-    </>
+      <div className='contain'>
+      <div className="row">
+        {item.map((cartItem) => (
+          <div className="column" key={cartItem._id}>
+             <div className="card" >
+              <div className="card-body">
+                <h5>{cartItem.name}</h5>
+                <h3>{cartItem.variety}</h3>
+                <p>Price: {cartItem.price}</p>
+                <label>Qty:</label>
+                <select id="qty" onChange={handleChange}>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+                <br></br>
+                <button onClick={(e) => addQ(e, cartItem._id)}>Want to add more</button>
+                <button onClick={(e) => removeCart(e, cartItem._id)}>Remove from cart</button>
+              </div>
+              </div>
+            </div>
+           
+        ))}
+      </div>
+      </div>
       
-
     
-  
-  )
+
+      <div className='payment'>
+        <h2 className="cart-heading">Payment</h2>
+    
+      <BottomSection pay={pay} total={total} pa={pa} />
+      </div>
+      <ToastContainer/>
+    </>
+    
+  );
 }
 
-export default Cart
+export default Cart;

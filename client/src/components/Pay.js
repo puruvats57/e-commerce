@@ -8,7 +8,7 @@ function Pay() {
       <div class="col-md-4 offset-md-4">
         <div class="card">
           <div class="card-body">
-            <form action="http://127.0.0.1:5000/pay" method="POST">
+            <form action="${process.env.BACKEND_LIVE_URL}/pay" method="POST">
               <div class="form-group">
                 <label for="">Name: </label>
                 <input class="form-control" type="text" name="name" />

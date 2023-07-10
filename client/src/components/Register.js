@@ -1,33 +1,24 @@
 import React from "react";
+import "../data.css"; // Import the CSS file
 
-function Register(props){
-    
+function Register(props) {
+  return (
+    <div className="register-container">
+      <h2>Register page</h2>
 
-
-    
-
-    return(
-        <>
-            <h2>register page</h2>
-            
-            <form action="http://127.0.0.1:5000/register" method="POST">
-                <div className="input-group">
-                <label for="name">name:</label>
-                <input type="text" name="name" />
-                </div>
-                <div className="input-group">
-                <label for="password">Password:</label>
-                <input type="text" name="password" />
-                </div>
-                <button>register</button>
-            </form>
-            
-            
-        
-        </>
-    
-
-    )
+      <form action="${process.env.BACKEND_LIVE_URL}/register" method="POST" className="register-form">
+        <div className="input-group">
+          <label htmlFor="name">Name:</label>
+          <input type="text" name="name" id="name" placeholder="Username"/>
+        </div>
+        <div className="input-group">
+          <label htmlFor="password">Password:</label>
+          <input type="password" name="password" id="password" placeholder="Password" />
+        </div>
+        <button className="register-button">Register</button>
+      </form>
+    </div>
+  );
 }
 
 export default Register;

@@ -8,6 +8,8 @@ import Register from "./components/Register";
 import Home from "./components/Home";
 import Data1 from "./components/Data1";
 import Pay from "./components/Pay";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 
 

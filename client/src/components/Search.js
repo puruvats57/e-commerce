@@ -1,65 +1,51 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../data.css';
 
-import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import "../data.css";
-
-function Search(props){
+function Search(props) {
   const navigate = useNavigate();
+  const [search, setSearch] = useState('');
 
-  const [loggedin, setlogin] = useState(null);
-  const [search, setsearch] = useState(null);
-  ;
+  function handleChange(event) {
+    setSearch(event.target.value);
+  }
 
-    
-   /* useEffect(() => {
-        console.log("runing",search);
-        props.onsearch(search);
-        
+  function handleSubmit(e) {
+    e.preventDefault();
+    navigate('/search', { state: { name: search } });
+  }
 
-    })*/
-    function handleChange(event) {
-        setsearch(event.target.value);
-      }
-
-    async function get(e){
-
-      
-      e.preventDefault();
-
-      navigate('/search', { state: {name:search } });
-
-    
-      
-        
-       
-    }
-    
-    
-
-    return(
-      <>
-        <div className="search">
-        <input 
-      type="text"
-      name="name"
-    
-      onChange={handleChange}
-       />
-
-        <button className="get" onClick={(e) => get(e)}>
-          search
+  return (
+    <div className="search-container">
+      <form className="search-form" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="name"
+          placeholder="Search item"
+          value={search}
+          onChange={handleChange}
+        />
+        <button type="submit" className="search-button">
+          <i className="fas fa-search"></i>
         </button>
-        
-        <a href='/login'><button class="button">login</button></a>
-        <a href='/cart'><button class="button">cart</button></a>
+      </form>
+      <select name="cars" id="cars">
+      <a class="dropdown-item" href="#">Action</a>
+     </select>
+
+      <div className="link-button-container">
+        {/*<a href="/login" className="link-button">
+          Login
+        </a>*/}
+
+        <a href="/cart" className="link-button">
+          Cart
+        </a>
+
         
       </div>
-        
-        </>
-    
-
-    )
+    </div>
+  );
 }
 
 export default Search;
