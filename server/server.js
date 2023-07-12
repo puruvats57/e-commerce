@@ -17,6 +17,7 @@ const https = require("https");
 const qs = require("querystring");
 const checksum_lib = require("./Paytm/checksum");
 const config = require("./Paytm/config");
+var nm = require('nodemailer');
 require("dotenv").config();
 //const config = require("config");
 const parseUrl = express.urlencoded({ extended: false });
@@ -221,6 +222,11 @@ app.post("/remove_item", isAuth, appController.remove_item);
 app.post("/addmore", isAuth, appController.addmore);
 app.post("/payment", isAuth, appController.payment);
 app.post("/brand", isAuth, appController.brand);
+app.post("/verify",appController.verify);
+app.post("/sendotp", appController.sendotp);
+app.post("/updatePassword",appController.updatePassword);
+
+
 const PORT = process.env.PORT || 5000;
 //const PORT = 5000;
 app.listen(PORT, function () {

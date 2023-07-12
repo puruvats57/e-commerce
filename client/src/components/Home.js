@@ -11,9 +11,8 @@ function Home(props)
     const navigate = useNavigate();
    
     let [got, getall] = useState(0);
-   
-    useEffect(() => {
-        
+  
+   useEffect(() => {
         
         fetch(`${process.env.REACT_APP_BACKEND_LIVE_URL}/fetch`,
 
@@ -110,7 +109,6 @@ function Home(props)
                 </div>
                 </div>
                   
-               
 
             </>
               
@@ -119,7 +117,7 @@ function Home(props)
         ))}
              
             </div>
-            
+            <ToastContainer/>
             
         </>
 

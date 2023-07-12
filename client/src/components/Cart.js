@@ -133,7 +133,7 @@ function Cart() {
 
   return (
     <>
-      <div className='contain'>
+      <div className='ok'>
       <div className="row">
         {item.map((cartItem) => (
           <div className="column" key={cartItem._id}>
@@ -163,7 +163,7 @@ function Cart() {
       
     
 
-      <div className='payment'>
+      <div className='side-left'>
         <h2 className="cart-heading">Payment</h2>
     
       <BottomSection pay={pay} total={total} pa={pa} />

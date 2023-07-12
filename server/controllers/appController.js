@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const Item = require("../models/items");
 const jwt = require('jsonwebtoken');
+var nm = require('nodemailer');
 let uid;
 
 exports.landing_page = (req, res) => {
@@ -58,9 +59,9 @@ exports.register_get = (req, res) => {
 };
 
 exports.register_post = async (req, res) => {
-  const { name, password } = req.body;
+  const { email,name, password } = req.body;
 
-  let user = await User.findOne({ name });
+  let user = await User.findOne({ email });
 
   if (user) {
     req.session.error = "User already exists";
@@ -70,6 +71,7 @@ exports.register_post = async (req, res) => {
  
 
   user = new User({
+    email,
     name,
     
     password
@@ -580,6 +582,126 @@ exports.brand = (req, res) => {
   }
 
 }
+
+let savedOTPS = {
+
+};
+var transporter = nm.createTransport(
+    {
+        service: "gmail",
+       
+        auth: {
+            user: 'prateekvats963@gmail.com',
+            pass: 'hixwjkmxxykbrnwt'
+        }
+    }
+);
+
+exports.sendotp = (req, res) => { 
+  const { email } = req.body;
+  
+  // Generate a 4-digit OTP (e.g., using a random number generator)
+  const otp = Math.floor(1000 + Math.random() * 9000);
+  const token = jwt.sign({ email, otp }, 'secretKey');
+  
+  // Send the OTP to the provided email address
+  const transporter = nm.createTransport({
+    service: 'gmail', // e.g., 'Gmail', 'SendGrid', etc.
+    auth: {
+      user: 'prateekvats963@gmail.com',
+      pass: 'hixwjkmxxykbrnwt',
+    },
+  });
+
+  const mailOptions = {
+    from: 'prateekvats963@gmail.com',
+    to: email,
+    subject: 'OTP Verification',
+    text: `Your OTP is: ${otp}`,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+      res.status(500).json({ message: 'Failed to send OTP' });
+    } else {
+      console.log('Email sent: ' + info.response);
+      res.json({ token });
+    }
+  });
+
+}
+
+exports.verify = (req, res) => {
+  const { email, otp, token } = req.body;
+
+  // Verify the JWT token and extract the OTP
+  try {
+    const decoded = jwt.verify(token, 'secretKey');
+    const { email: decodedEmail, otp: decodedOtp } = decoded;
+
+    
+
+    // Perform OTP verification logic (e.g., comparing the provided OTP with the one stored in the JWT)
+    if (email==decodedEmail && otp==decodedOtp) {
+    
+      res.json({ status:200,response: 'OTP verified successfully' });
+    } else {
+      
+      res.json({ response: 'Invalid OTP Enter Again' });
+    }
+  } catch (err) {
+    console.error('Error:', err);
+    res.status(400).json({ response: 'Invalid token or expired' });
+  }
+
+}
+ 
+exports.updatePassword = async (req, res) => {
+  const { email, password } = req.body;
+  const trimmedEmail = email.trim();
+  const trimmedPassword = password.trim();
+  try {
+    const result = await User.updateOne(
+      { email: trimmedEmail },
+      { $set: { password: trimmedPassword } }
+    );
+  
+    if (result.nModified > 0) {
+      console.log("Password updated successfully");
+      res.json({ status: 200 });
+    } else {
+      console.log("User not found or password not updated");
+    }
+  
+    // Rest of your code
+  } catch (error) {
+    console.error("Error:", error);
+    // Handle the error
+  }
+  /*try {
+    const user = await User.findOne({ email:trimmedEmail}).exec();
+
+    if (user) {
+      console.log("User found:", user);
+      user.password = trimmedPassword;
+      user.save();
+
+    } else {
+      console.log("User not found");
+    }
+
+    // Rest of your code
+  } catch (error) {
+    console.error("Error:", error);
+    // Handle the error
+  }*/
+};
+
+
+
+
+
 
 
 

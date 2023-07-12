@@ -4,10 +4,14 @@ import "../data.css"; // Import the CSS file
 function Register(props) {
   const backendUrl = process.env.REACT_APP_BACKEND_LIVE_URL;
   return (
-    <div className="register-container">
+    <div className="login-container">
       <h2>Register page</h2>
 
       <form action={`${backendUrl}/register`} method="POST" className="register-form">
+      <div className="input-group">
+          <label htmlFor="name">Email:</label>
+          <input type="text" name="email" id="email" placeholder="Email"/>
+        </div>
         <div className="input-group">
           <label htmlFor="name">Name:</label>
           <input type="text" name="name" id="name" placeholder="Username"/>

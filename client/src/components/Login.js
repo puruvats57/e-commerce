@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { setName } from '../store';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../data.css'; // Import the CSS file
 
 function Login(props) {
+ 
+  const dispatch = useDispatch();
   let [token, setToken] = useState(null);
   const navigate = useNavigate();
 
-  function logout() {
-    localStorage.removeItem('token');
-    alert("Logged out successfully");
-    navigate('/');
-    }
-    
   function handleRegisterClick() {
     navigate('/register');
   }
@@ -39,6 +37,7 @@ function Login(props) {
       }).then((res) => res.json())
 
       if (result.status === 'ok') {
+        dispatch(setName(name));
         //alert('Logged in successfully');
         await toast.success('Successfully added', {
             position: toast.POSITION.TOP_RIGHT,
@@ -61,18 +60,15 @@ function Login(props) {
         <input type="text" autoComplete="off" id="name" placeholder="Username" />
 
         <label htmlFor="password">Password:</label>
-        <input type="password" autoComplete="off" id="password" placeholder="Password" />
+            <input type="password" autoComplete="off" id="password" placeholder="Password" />
 
-        <input type="submit" value="Login" />
+            <input type="submit" value="Login" />
+            <a href='/email'>Forgot password</a>
       </form>
 
-      <p>If you don't have an account, please register!</p>
-        
-          <button className="button" onClick={handleRegisterClick}>
-        Register
-      </button>
+      
 
-      <button className="button" onClick={logout}>Logout</button>
+      
       </div>
       <ToastContainer/>
       </>

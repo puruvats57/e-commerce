@@ -82,17 +82,19 @@ function Data1(props) {
                 
             
             }).then(response => response.json())
-            .then(json => {
-                if (json.status != "login") {
-                    console.log("uid=", json.token);
-                    setuid(json.token);
+            .then(data => {
+                if (data.status == "login") {
+                    console.log("uid=",data.token);
+                    setuid(data.token);
                     toast.success('Successfully added', {
                         position: toast.POSITION.TOP_RIGHT,
                       });
                     
                 }
                 else {
+                    console.log("oh yes");
                     alert('login first');
+                    
                     navigate('/login');
                     
                 }
@@ -150,7 +152,7 @@ function Data1(props) {
     return (
         
         <>
-
+            <div className='ok'>
             <div className="row">
                 
             {Object.keys(get).map((key) => (
@@ -179,8 +181,9 @@ function Data1(props) {
             ))}
                
             </div>
+            </div>
             
-            <div className="side" >
+            <div className="side-left" >
                 <u><h2>filter</h2></u>
                 <h4>brands</h4>
                 {Object.keys(brands).map((key) => (
