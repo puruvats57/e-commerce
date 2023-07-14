@@ -221,7 +221,7 @@ app.post("/cart_items", isAuth, appController.cart_items);
 app.post("/remove_item", isAuth, appController.remove_item);
 app.post("/addmore", isAuth, appController.addmore);
 app.post("/payment", isAuth, appController.payment);
-app.post("/brand", isAuth, appController.brand);
+app.post("/brand",appController.brand);
 app.post("/verify",appController.verify);
 app.post("/sendotp", appController.sendotp);
 app.post("/updatePassword",appController.updatePassword);

@@ -15,6 +15,11 @@ function Search(props) {
 
   function handleChange(event) {
     setSearch(event.target.value);
+    /*if (search == '')
+      navigate('/');
+    else
+      navigate('/search', { state: { name: search } });
+  }*/
   }
 
   function handleSubmit(e) {
@@ -23,6 +28,7 @@ function Search(props) {
   }
   const handleClear = () => {
     setSearch('');
+    navigate('/');
   };
 
   function login() {
@@ -44,8 +50,10 @@ function Search(props) {
       MyShop
     </Link>
   </div>
-  <div className="search-input-container">
-    <form className="search-form" onSubmit={handleSubmit}>
+      <div className="search-input-container">
+        
+        <form className="search-form" onSubmit={handleSubmit}>
+          <div className='search-bar'>
           <input
           type="text"
           name="name"
@@ -56,16 +64,20 @@ function Search(props) {
           
             
               
-        />
+          />
+          
           {search && (
             <button type="button" className="clear-button" onClick={handleClear}>
               <FaTimes />
             </button>
           )}
-      <button type="submit" className="search-button">
-        <FaSearch />
-      </button>
-    </form>
+          </div>
+            
+          <button type="submit" className="search-button">
+            <FaSearch />
+          </button>
+          </form>
+    
   </div>
 
   <div className="dropdown">

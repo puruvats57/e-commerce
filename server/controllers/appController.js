@@ -523,7 +523,7 @@ exports.remove_item = (req, res) => {
 exports.brand = (req, res) => {
   const { name, brand, min, max } = req.body;
   console.log("name,brand,min,max=", name, brand, min, max);
-  if (brand.length != 0 && min != null && max != null) {
+  if (brand.length != 0 && min!=0 && max!= 0) {
     console.log("inside fun1");
   
     Item.find({ name: name, brand: brand, price: { $gte: min, $lte: max } }, function (err, allDetails) {
@@ -536,9 +536,10 @@ exports.brand = (req, res) => {
     
     })
   }
-  else if (brand.length == 0 && (min != null || max != null)) {
+  else if (brand.length == 0 && (min != 0 || max != 0)) {
     console.log("i am in fun2");
     Item.find({
+      name: name,
       price: {
         $gte: min,
         $lte: max
@@ -554,7 +555,7 @@ exports.brand = (req, res) => {
     
     
   }
-  else if (brand.length != 0 ) {
+  else if (brand.length != 0 && min==0 && max==0 ) {
     console.log("insidee fun3");
     Item.find({ name: name, brand: brand }, function (err, allDetails) {
       if (err) {
@@ -567,8 +568,23 @@ exports.brand = (req, res) => {
     })
     
   }
+  else if (brand.length != 0 && (min==0 && max!=0 )){
+    console.log("insidee fun4");
+    Item.find({ name: name, brand: brand,price: {
+      $lte: max
+    } }, function (err, allDetails) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        res.send({ "data": allDetails });
+      }
+    
+    })
+    
+  }
   else {
-    console.log('insode fun4')
+    console.log('insode fun5')
     Item.find({ name: name }, function (err, allDetails) {
       if (err) {
         console.log(err);

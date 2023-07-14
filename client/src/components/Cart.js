@@ -133,6 +133,7 @@ function Cart() {
 
   return (
     <>
+      <div className='container'>
       <div className='ok'>
       <div className="row">
         {item.map((cartItem) => (
@@ -162,12 +163,14 @@ function Cart() {
       </div>
       
     
-
+      </div>
+      
       <div className='side-left'>
         <h2 className="cart-heading">Payment</h2>
     
       <BottomSection pay={pay} total={total} pa={pa} />
-      </div>
+        </div>
+        
       <ToastContainer/>
     </>
     
