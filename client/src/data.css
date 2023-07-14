@@ -795,6 +795,41 @@ h1 {
   box-shadow: 0 0 5px rgba(196, 85, 0, 0.5);
 }
 
+.error-input {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+}
+
+.success-message {
+  color: #28a745; /* Green color */
+  display: flex;
+  align-items: center;
+}
+
+.success-message i {
+  margin-right: 5px;
+  animation: spin 2s infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.tick-icon {
+  color: green; /* Set the color to green */
+  animation: spin 2s infinite;
+  font-size: 2rem; /* Increase the size of the icon */
+}
+
+
+
 
 
 

@@ -26,15 +26,15 @@ exports.login_post = async (req, res) => {
 
   if (!user) {
     
-    return res.json({ status: 'wrong username' });
+    return res.json({ status: 'Wrong Username' });
   }
 
   
   if(password != user.password)
   {
     
-    
-    return res.json({ status: 'password' });
+    console.log('wrong pass');
+    return res.json({ status: 'Wrong Password' });
     
   }
   console.log("posted");
@@ -64,8 +64,9 @@ exports.register_post = async (req, res) => {
   let user = await User.findOne({ email });
 
   if (user) {
-    req.session.error = "User already exists";
-    return res.redirect("/register");
+    console.log("User already exists");
+    return res.status(409).json({ message: "User already exists" });
+    //return res.redirect("/register");
   }
 
  
@@ -78,7 +79,7 @@ exports.register_post = async (req, res) => {
   });
 
   await user.save();
-  res.redirect(`${process.env.REACT_APP_FRONTEND_LIVE_URL}/login`);
+  res.status(200).json({ message: "Registration successful" });
 };
 
 exports.addmore = async(req, res, next) => { 

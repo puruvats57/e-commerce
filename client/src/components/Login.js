@@ -1,29 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setName } from '../store';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import '../data.css'; // Import the CSS file
 
 function Login(props) {
- 
   const dispatch = useDispatch();
-  let [token, setToken] = useState(null);
   const navigate = useNavigate();
-
-  function handleRegisterClick() {
-    navigate('/register');
-  }
+  let [token, setToken] = useState(null);
+  const [isLogged, setIsLogged] = useState(false);
 
   useEffect(() => {
-    const form = document.getElementById('login')
-    form.addEventListener('submit', login)
+    const form = document.getElementById('login');
+    form.addEventListener('submit', login);
 
     async function login(event) {
-      event.preventDefault()
-      const name = document.getElementById('name').value
-      const password = document.getElementById('password').value
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const password = document.getElementById('password').value;
 
       const result = await fetch(`${process.env.REACT_APP_BACKEND_LIVE_URL}/login`, {
         method: 'POST',
@@ -34,44 +30,47 @@ function Login(props) {
           name,
           password
         })
-      }).then((res) => res.json())
+      }).then((res) => res.json());
 
       if (result.status === 'ok') {
         dispatch(setName(name));
-        //alert('Logged in successfully');
-        await toast.success('Successfully added', {
-            position: toast.POSITION.TOP_RIGHT,
-          });  
+        setIsLogged(true);
         setToken(result.data);
         localStorage.setItem('token', result.data);
-        navigate('/');
+        setTimeout(() => {
+          navigate('/');
+        }, 2000); // Wait for 2 seconds (adjust as needed)
       } else {
         alert(result.status);
       }
     }
   }, []);
 
-    return (
-      <>
-    <div className="login-container">
-      <h2>Login page</h2>
-      <form id="login" className="login-form">
-        <label htmlFor="name">Username:</label>
-        <input type="text" autoComplete="off" id="name" placeholder="Username" />
+  return (
+    <>
+      <div className="login-container">
+        {isLogged ? (
+          <div id="success-message">
+            <FontAwesomeIcon icon={faCheckCircle} className="tick-icon" />
+            Logged in successfully
+          </div>
+        ) : (
+          <>
+            <h2>Login page</h2>
+            <form id="login" className="login-form">
+              <label htmlFor="name">Username:</label>
+              <input type="text" autoComplete="off" id="name" placeholder="Username" />
 
-        <label htmlFor="password">Password:</label>
-            <input type="password" autoComplete="off" id="password" placeholder="Password" />
+              <label htmlFor="password">Password:</label>
+              <input type="password" autoComplete="off" id="password" placeholder="Password" />
 
-            <input type="submit" value="Login" />
-            <a href='/email'>Forgot password</a>
-      </form>
-
-      
-
-      
+              <input type="submit" value="Login" />
+              <a href="/email">Forgot password</a>
+            </form>
+          </>
+        )}
       </div>
-      <ToastContainer/>
-      </>
+    </>
   );
 }
 
