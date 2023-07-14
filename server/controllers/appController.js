@@ -26,7 +26,7 @@ exports.login_post = async (req, res) => {
 
   if (!user) {
     
-    return res.json({ status: 'Wrong Username' });
+    return res.json({ status: 'You are not Registered with us' });
   }
 
   
