@@ -42,6 +42,9 @@ function Login(props) {
         }, 2000); // Wait for 2 seconds (adjust as needed)
       } else {
         alert(result.status);
+        if (result.status == 'You are not Registered with us') {
+          navigate('/register');
+        }
       }
     }
   }, []);
