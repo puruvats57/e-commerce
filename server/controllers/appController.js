@@ -507,7 +507,7 @@ exports.remove_item = (req, res) => {
 };
 
 exports.brand = (req, res) => {
-  const { name, brand, min, max } = req.body;
+  var { name, brand, min, max } = req.body;
   name= name.toLowerCase();
   if (brand.length != 0 && min!=0 && max!= 0) {
     console.log("inside fun1");
