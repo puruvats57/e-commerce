@@ -89,17 +89,9 @@ exports.addmore = async(req, res, next) => {
   const { uid } = req.uid;
   let t;
   q = parseInt(q);
-  console.log('qq', q + 1);
-  
-    console.log("req.id=", id);
     //var id = req.body.id;
 
   var _id = uid.id;
-  
-  
-
-    //console.log("uid", uid);
-    console.log("uid", _id);
     
     
     /*Item.updateOne(
@@ -115,11 +107,10 @@ exports.addmore = async(req, res, next) => {
 
   //to find item size in user's cart 
   await User.find({ _id: _id }, function (err, d) {
-    console.log("hye from find");
     if (d) {
         
       let f = 0;
-      console.log("log", d[0].cart);
+      
       for (var i = 0; i < d[0].cart.length; i++) {
         if (d[0].cart[i].obj == id) {
           f = 1;
@@ -131,9 +122,7 @@ exports.addmore = async(req, res, next) => {
         
       }
       if (f == 1) {
-        console.log('found');
         t = d[0].cart[i].quantity;
-        console.log("t", t);
       }
       else {
         
@@ -160,8 +149,7 @@ exports.addmore = async(req, res, next) => {
           console.warn(err);
           return;
         }
-        
-        console.log('cart decrement');
+      
         // console.log("id", id);
         // console.log("item info", updatedItem);
       });
@@ -173,7 +161,6 @@ exports.addmore = async(req, res, next) => {
     if (d) {
         
       let f = 0;
-      console.log("log", d[0].cart);
       for (var i = 0; i < d[0].cart.length; i++) {
         if (d[0].cart[i].obj == id) {
           f = 1;
@@ -185,7 +172,6 @@ exports.addmore = async(req, res, next) => {
         
       }
       if (f == 1) {
-        console.log('found');
        // t = d[0].cart[i].quantity + q;
         
         User.updateOne({ _id: _id, "cart.obj": id },
@@ -211,9 +197,9 @@ exports.addmore = async(req, res, next) => {
 
 
 exports.addtocart = (req, res, next) => {
-  console.log('hye from get_id');
+  
   if (req.status == 'loginfirst') {
-    console.log('login first');
+    
     return res.json({ "data": "login" });
     
   }
@@ -222,14 +208,14 @@ exports.addtocart = (req, res, next) => {
     const { token, id, q } = req.body;    //id=selected item id
     const { uid } = req.uid;
   
-    console.log("req.id=", id);
+    
     //var id = req.body.id;
 
     var _id = uid.id;
   
 
     //console.log("uid", uid);
-    console.log("uid", _id);
+    
     
     
     /*Item.updateOne(
@@ -327,36 +313,35 @@ exports.cart_items = (req, res) => {
     let { uid } = req.uid;
     var _id = uid.id;
   
-    console.log("_id for cart", _id);
   
   
   
     User.find({ _id: _id }, function (err, allDetails) {
       if (err) {
-        console.log(err);
+      
       } else {
-        console.log(allDetails);
+        
 
         items = allDetails[0].cart;
-        console.log("items for user", items);
+
        
         var a = [];
-        console.log("length", items.length);
+        
         for (var i = 0; i < items.length; i++)
         {
           a.push(items[i].obj);
 
           
         }
-        console.log("id", a);
+    
 
     
         Item.find({ _id: { $in: a } }, function (err, allDetails) {
         if (err) {
-            console.log(err);
+            
         } else {
           
-          console.log("ii", allDetails);
+        
           
           
           
@@ -524,9 +509,7 @@ exports.remove_item = (req, res) => {
 };
 
 exports.brand = (req, res) => {
-  var { name, brand, min, max } = req.body;
-  name = name.toLowerCase();
-  //name
+  const { name, brand, min, max } = req.body;
   console.log("name,brand,min,max=", name, brand, min, max);
   if (brand.length != 0 && min!=0 && max!= 0) {
     console.log("inside fun1");
@@ -542,7 +525,7 @@ exports.brand = (req, res) => {
     })
   }
   else if (brand.length == 0 && (min != 0 || max != 0)) {
-    console.log("i am in fun2");
+    
     Item.find({
       name: name,
       price: {
