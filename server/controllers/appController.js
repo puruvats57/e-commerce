@@ -456,7 +456,7 @@ exports.remove_item = (req, res) => {
   
   let t;
 
-  //console.log("uid", uid);
+  //console.log("uid", uid); //okay
   console.log("uid", _id);
 
   User.find({ _id: _id }, function (err, d) { 
