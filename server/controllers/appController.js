@@ -26,7 +26,7 @@ exports.login_post = async (req, res) => {
 
   if (!user) {
     
-    return res.json({ status: 'Wrong Username' });
+    return res.json({ status: 'You are not Registered with us' });
   }
 
   
@@ -37,6 +37,8 @@ exports.login_post = async (req, res) => {
     return res.json({ status: 'Wrong Password' });
     
   }
+  
+
   console.log("posted");
   let id = user._id;
 
@@ -522,7 +524,9 @@ exports.remove_item = (req, res) => {
 };
 
 exports.brand = (req, res) => {
-  const { name, brand, min, max } = req.body;
+  var { name, brand, min, max } = req.body;
+  name = name.toLowerCase();
+  //
   console.log("name,brand,min,max=", name, brand, min, max);
   if (brand.length != 0 && min!=0 && max!= 0) {
     console.log("inside fun1");

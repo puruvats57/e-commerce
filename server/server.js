@@ -62,7 +62,8 @@ app.get('/fetch',function(req,res) {
 app.post('/fetch', function (req, res) {
   var brand = new Set([]);
   console.log("item name",req.body.search);
-  let search=req.body.search;
+  var search = req.body.search;
+  search= search.toLowerCase();
   Item.find({name:search}, function (err, allDetails) {
     if (err) {
         console.log(err);
